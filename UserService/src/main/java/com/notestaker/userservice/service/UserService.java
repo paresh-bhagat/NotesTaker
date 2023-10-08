@@ -2,9 +2,12 @@ package com.notestaker.userservice.service;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.notestaker.userservice.entity.User;
 import com.notestaker.userservice.repository.UserRepository;
 
+@Service
 public class UserService {
 	
 	@Autowired

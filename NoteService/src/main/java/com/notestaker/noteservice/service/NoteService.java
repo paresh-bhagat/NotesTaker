@@ -13,7 +13,7 @@ public class NoteService {
 	private NoteRepository noteRepository;
 	
 	public Note getNote(int id, String username) {
-        return this.noteRepository.findByIdAndUserUsername(id, username).orElse(null);
+        return this.noteRepository.findByIdAndUsername(id, username).orElse(null);
     }
 	
 	public Note addNote(String name,Note note) {

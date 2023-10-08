@@ -27,15 +27,6 @@ public class NoteController {
 	@Autowired
 	private NoteService noteservice;
 	
-	@GetMapping("/test")
-	public Note testing() {
-		System.out.print("testing");
-		Note temp = new Note();
-		temp.setTitle("test title");
-		temp.setContent("test content");
-		return temp;
-	}
-	
 	// get note handler
 	@GetMapping("/notes/{id}")
 	public ResponseEntity<Note> getNote(@PathVariable("id") int id, Principal principal) {
@@ -74,8 +65,9 @@ public class NoteController {
 		
 		//if(user.getNotes()==null || user.getNotes().isEmpty())
 		//	return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-			
-		return ResponseEntity.status(HttpStatus.OK).body(user.getNotes());
+		List<Note> temp = new ArrayList<Note>();
+		
+		return ResponseEntity.status(HttpStatus.OK).body(temp);
 	}
 	
 	// add note handler

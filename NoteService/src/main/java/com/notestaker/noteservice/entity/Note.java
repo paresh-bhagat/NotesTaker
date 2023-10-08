@@ -42,7 +42,7 @@ public class Note {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
-	@Column(name="user_name")
-	private String user;
+	@Column(name="note_username")
+	private String username;
 	
 }

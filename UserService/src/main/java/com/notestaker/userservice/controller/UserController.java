@@ -19,7 +19,7 @@ import com.notestaker.userservice.service.UserService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/notesapi")
+@RequestMapping("/notestaker")
 public class UserController {
 	
 	@Autowired
@@ -102,4 +102,6 @@ public class UserController {
 			
 		return new ResponseEntity<>("Account Deleted Successfully", HttpStatus.OK);
 	}
+	
+	
 }
