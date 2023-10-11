@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/notestaker")
 public class UserController {
-	
+
 	@Autowired
 	private UserService userservice;
 	

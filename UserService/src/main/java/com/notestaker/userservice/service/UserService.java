@@ -2,13 +2,16 @@ package com.notestaker.userservice.service;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.notestaker.userservice.entity.User;
 import com.notestaker.userservice.repository.UserRepository;
 
 @Service
 public class UserService {
+
+	@Autowired
+	private BCryptPasswordEncoder passswordEncoder;
 	
 	@Autowired
 	private UserRepository userrepo;
@@ -22,6 +25,7 @@ public class UserService {
 	}
 	
 	public User signup(User user) {
+		user.setPassword(this.passswordEncoder.encode(user.getPassword()));
 		user.setRole("ROLE_USER");
 		return this.userrepo.save(user);
 	}
@@ -33,7 +37,12 @@ public class UserService {
 	public boolean deleteUser(String name, String password) {
 		
 		User user = getUserDetails(name);
+		
+		if(passswordEncoder.matches(password, user.getPassword())==false)
+			return false;
+		
 		this.userrepo.delete(user);
+		
 		return true;
 	}
 }

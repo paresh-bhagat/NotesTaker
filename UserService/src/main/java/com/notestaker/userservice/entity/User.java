@@ -1,6 +1,9 @@
 package com.notestaker.userservice.entity;
 
+import java.util.Collection;
 import java.util.List;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -20,7 +23,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 @Table(name="user")
-public class User {
+public class User implements UserDetails {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(length=20,name="user_name")
@@ -30,10 +35,39 @@ public class User {
 	@Column(length=100,name="user_password")
 	private String password;
 	
-	@Column(length=10,name="user_role")
+	@Column(length=10,name="User_Role")
 	private String role;
 	
 	@Transient
 	private List<Note> notes;
 
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }
