@@ -43,6 +43,7 @@ public class Note {
 	private Date date;
 	
 	@Column(name="note_username")
+	@Size(min=1,max=20,message="Username between 1 to 20 characters")
 	private String username;
 	
 }

@@ -10,10 +10,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.notestaker.userservice.entity.Note;
 import com.notestaker.userservice.entity.User;
 import com.notestaker.userservice.service.UserService;
 import jakarta.validation.Valid;
@@ -103,5 +106,68 @@ public class UserController {
 		return new ResponseEntity<>("Account Deleted Successfully", HttpStatus.OK);
 	}
 	
+	// get note handler
+	@GetMapping("/user/notes/{id}")
+	public ResponseEntity<Note> getNote(@PathVariable("id") int id, Principal principal) {
+		
+		String name = principal.getName();
+		return userservice.getNotes(name,id);
+	}
 	
+	// get all notes handler
+	@GetMapping("/user/notes")
+	public ResponseEntity<List<Note>> getAllNotes(Principal principal) {
+		
+		String name = principal.getName();
+		return userservice.getAllNotes(name);
+	}
+	
+	// add note handler
+	@PostMapping("/user/notes")
+	public ResponseEntity<?> addNote(@Valid @RequestBody Note newNote, BindingResult result,
+				Principal principal) {
+		
+		if (result.hasErrors()) {
+			
+			List<String> errorMessages = new ArrayList<>();
+			for (FieldError error : result.getFieldErrors()) {
+				errorMessages.add(error.getDefaultMessage());
+			 }
+			        
+			return new ResponseEntity<>("Validation errors: " + errorMessages, HttpStatus.BAD_REQUEST);
+		}
+		
+		String name = principal.getName();
+		return userservice.addNote(name,newNote);
+	}
+	
+	// delete note handler
+	@DeleteMapping("/user/notes/{id}")
+	public ResponseEntity<Void> deleteNote(@PathVariable("id") int id, Principal principal) {
+		System.out.print("delete note");
+		String name = principal.getName();
+		return userservice.deleteNote(name,id);
+	}
+	
+	// update note handler
+	@PutMapping("/user/notes/{id}")
+	public ResponseEntity<?> updateNote(@PathVariable("id") int id, @Valid @RequestBody Note newNote, 
+				BindingResult result, Principal principal) {
+		System.out.print("update note");
+		
+		// Check validation errors
+		if (result.hasErrors()) {
+									
+			List<String> errorMessages = new ArrayList<>();
+			for (FieldError error : result.getFieldErrors()) {
+				errorMessages.add(error.getDefaultMessage());
+			}
+							        
+			return new ResponseEntity<>("Validation errors: " + errorMessages, HttpStatus.BAD_REQUEST);
+		}
+		
+		String name = principal.getName();
+		return userservice.updateNote(name, id, newNote);
+	}
+			
 }

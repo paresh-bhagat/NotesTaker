@@ -12,12 +12,12 @@ spring:
         - id: USER-SERVICE
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/users/**
+            - Path=/notestaker/**
 
         - id: NOTE-SERVICE
           uri: lb://NOTE-SERVICE
           predicates:
-            - Path=/notes/**
+            - Path=/notestaker/**
 
 # eureka client
 eureka:

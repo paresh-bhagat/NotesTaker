@@ -1,6 +1,7 @@
 package com.notestaker.noteservice.service;
 
 import java.util.Date;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.notestaker.noteservice.entity.Note;
@@ -18,8 +19,7 @@ public class NoteService {
 	
 	public Note addNote(String name,Note note) {
 		
-		//User user = this.userrepo.getUserByUserName(name);
-		//note.setUser(user);
+		note.setUsername(name);
 		Date date = new Date();
 		note.setDate(date);
 		return this.noteRepository.save(note);
@@ -48,7 +48,18 @@ public class NoteService {
 		temp.setContent(note.getContent());
 		Date date = new Date();
 		temp.setDate(date);
+		temp.setUsername(name);
 		
 		return this.noteRepository.save(temp);
+	}
+
+	public List<Note> getAllNotes(String username) {
+		
+		return this.noteRepository.findAllByUsername(username).orElse(null);
+	}
+	
+	public void deleteAllNotes(String username) {
+		this.noteRepository.deleteAllByUsername(username);
+		return;
 	}
 }

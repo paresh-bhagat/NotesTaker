@@ -1,6 +1,5 @@
 package com.notestaker.noteservice.controller;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,21 +20,20 @@ import com.notestaker.noteservice.service.NoteService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/notesapi/user")
+@RequestMapping("/notestaker/")
 public class NoteController {
 	
 	@Autowired
 	private NoteService noteservice;
 	
 	// get note handler
-	@GetMapping("/notes/{id}")
-	public ResponseEntity<Note> getNote(@PathVariable("id") int id, Principal principal) {
-		System.out.print("get note");
+	@GetMapping("/notes/{id}/{username}")
+	public ResponseEntity<Note> getNote(@PathVariable("id") int id, @PathVariable("username") String username) {
+		
 		Note note = new Note();
 		
 		try {
-			String name = principal.getName();
-			note = this.noteservice.getNote(id, name);
+			note = this.noteservice.getNote(id, username);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -49,41 +47,35 @@ public class NoteController {
 	}
 	
 	// get all notes handler
-	@GetMapping("/notes")
-	public ResponseEntity<List<Note>> getAllNotes(Principal principal) {
+	@GetMapping("/notes/{username}")
+	public ResponseEntity<?> getAllNotes(@PathVariable("username") String username) {
 		
 		System.out.print("get note");
+		List<Note> notes;
 		
 		try {
-			String name = principal.getName();
-			//user = this.userservice.getUserDetails(name);
+			 notes = this.noteservice.getAllNotes(username);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 		
-		//if(user.getNotes()==null || user.getNotes().isEmpty())
-		//	return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		List<Note> temp = new ArrayList<Note>();
+		if( notes==null || notes.isEmpty())
+			return ResponseEntity.status(HttpStatus.OK).body("No records");
 		
-		return ResponseEntity.status(HttpStatus.OK).body(temp);
+		return ResponseEntity.status(HttpStatus.OK).body(notes);
 	}
 	
 	// add note handler
-	@PostMapping("/notes")
-	public ResponseEntity<?> addNote(@Valid @RequestBody Note newNote, BindingResult result,
-			Principal principal) {
-		//System.out.print("new note id=" + newNote.getId());
+	@PostMapping("/notes/{username}")
+	public ResponseEntity<?> addNote(@Valid @RequestBody Note newNote, @PathVariable("username") String username) {
+		
 		// Check validation errors
-		if (result.hasErrors()) {
-					
-			List<String> errorMessages = new ArrayList<>();
-			for (FieldError error : result.getFieldErrors()) {
-				errorMessages.add(error.getDefaultMessage());
-			 }
+		if ( newNote.getTitle().length()<1 || newNote.getTitle().length()>70 || 
+				newNote.getContent().length()<1 || newNote.getContent().length()>7500  ) {
 			        
-			return new ResponseEntity<>("Validation errors: " + errorMessages, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Validation errors", HttpStatus.BAD_REQUEST);
 		}
 		
 		if( newNote.getId()!=0 )
@@ -92,8 +84,7 @@ public class NoteController {
 		Note note = new Note();
 		
 		try {
-			String name = principal.getName();
-			note = this.noteservice.addNote(name, newNote);
+			note = this.noteservice.addNote(username, newNote);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -107,13 +98,12 @@ public class NoteController {
 	}
 	
 	// delete note handler
-	@DeleteMapping("/notes/{id}")
-	public ResponseEntity<Void> deleteNote(@PathVariable("id") int id, Principal principal) {
+	@DeleteMapping("/notes/{id}/{username}")
+	public ResponseEntity<Void> deleteNote(@PathVariable("id") int id, @PathVariable("username") String username) {
 		System.out.print("delete note");
 		
 		try {
-			String name = principal.getName();
-			if(this.noteservice.deleteNote(id, name)==false)
+			if(this.noteservice.deleteNote(id, username)==false)
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		catch(Exception e) {
@@ -126,23 +116,18 @@ public class NoteController {
 	}
 	
 	// update note handler
-	@PutMapping("/notes/{id}")
+	@PutMapping("/notes/{id}/{username}")
 	public ResponseEntity<?> updateNote(@PathVariable("id") int id, @Valid @RequestBody Note newNote, 
-			BindingResult result, Principal principal) {
+			@PathVariable("username") String username) {
+		
 		System.out.print("update note");
 		
 		// Check validation errors
-		if (result.hasErrors()) {
-							
-			List<String> errorMessages = new ArrayList<>();
-			for (FieldError error : result.getFieldErrors()) {
-				errorMessages.add(error.getDefaultMessage());
-			}
+		if ( newNote.getTitle().length()<1 || newNote.getTitle().length()>70 || 
+				newNote.getContent().length()<1 || newNote.getContent().length()>7500 ) {
 					        
-			return new ResponseEntity<>("Validation errors: " + errorMessages, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Validation errors",  HttpStatus.BAD_REQUEST);
 		}
-		
-		//System.out.print("new note id=" + newNote.getId());
 		
 		if (newNote.getId()!=0 && newNote.getId()!=id)
 			return new ResponseEntity<>("IDs does not match", HttpStatus.BAD_REQUEST);
@@ -150,8 +135,7 @@ public class NoteController {
 		Note note = new Note();
 		
 		try {
-			String name = principal.getName();
-			note = this.noteservice.updateNote(id, name, newNote);
+			note = this.noteservice.updateNote(id, username, newNote);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -162,6 +146,22 @@ public class NoteController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		
 		return ResponseEntity.status(HttpStatus.OK).body(note);
+	}
+	
+	// delete all notes handler
+	@DeleteMapping("/notes/{username}")
+	public ResponseEntity<Void> deleteAllNotes(@PathVariable("username") String username) {
 		
+		System.out.print("delete note");
+			
+		try {
+			this.noteservice.deleteAllNotes(username);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+			
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }
