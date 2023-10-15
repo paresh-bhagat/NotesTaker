@@ -6,13 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 import com.notestaker.userservice.entity.Note;
 import com.notestaker.userservice.entity.User;
 import com.notestaker.userservice.externalservice.NoteServiceClient;
 import com.notestaker.userservice.repository.UserRepository;
-
-import jakarta.validation.Valid;
 
 @Service
 public class UserService {
@@ -51,9 +48,9 @@ public class UserService {
 		if(passswordEncoder.matches(password, user.getPassword())==false)
 			return false;
 		
-		this.userrepo.delete(user);
-		
 		ResponseEntity<Void> responseentity = this.noteserviceclient.deleteAllNotes(name);
+		
+		this.userrepo.delete(user);
 		
 		if(responseentity.getStatusCode() != HttpStatus.OK)
 			return false;
@@ -82,6 +79,5 @@ public class UserService {
 	public ResponseEntity<?> updateNote(String name, int id, Note newNote) {
 		return noteserviceclient.updateNote(id, newNote, name);
 	}
-	
 	
 }

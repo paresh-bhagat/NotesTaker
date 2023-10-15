@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.notestaker.noteservice.entity.Note;
 import com.notestaker.noteservice.repository.NoteRepository;
 
@@ -58,6 +60,7 @@ public class NoteService {
 		return this.noteRepository.findAllByUsername(username).orElse(null);
 	}
 	
+	@Transactional
 	public void deleteAllNotes(String username) {
 		this.noteRepository.deleteAllByUsername(username);
 		return;
