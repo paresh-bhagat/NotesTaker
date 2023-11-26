@@ -16,11 +16,11 @@ Spring Boot Tutorial provides basic and advanced concepts of Spring Framework. O
 
 #### MySQL
 
-MySQL is an open-source relational database management system
+MySQL is an open-source relational database management system. It is used for UserService for storing user credentials. Notestaker database will be created automatically by this service if it does not exist.
 
 #### PostgreSQL
 
-PostgreSQL is a powerful, open source object-relational database
+PostgreSQL is a powerful, open source object-relational database. It is used for NoteService service here to store notes data. You need to create a notestaker database by yourself before running the service otherwise running the NoteService will throw an error.
 
 ## Tools
 
@@ -42,7 +42,7 @@ Service registry used is Netflix Eureka server. Its primary purpose is to facili
 
 * API-GATEWAY
 
-API Gateway is a server or service that acts as an API front-end, receiving API requests and passing requests to the back-end service. Spring Cloud Gateway is used here. Spring Cloud Gateway is a lightweight and highly customizable API Gateway built on top of Spring Boot.
+API Gateway is a server or service that acts as an API front-end, receiving API requests and passing requests to the back-end service. Spring Cloud Gateway is used here. Spring Cloud Gateway is a lightweight and highly customizable API Gateway built on top of Spring Boot. It run son port 8080.
 
 ## How to use?
 
