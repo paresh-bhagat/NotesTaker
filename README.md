@@ -33,21 +33,28 @@ Postman - Postman is an API(application programming interface) development tool 
 
 ## Services
 
-* USER-SERVICE
+### USER-SERVICE
 
-It uses MySQL database and handles user, signup, login, jwt authentication. After validating the token it calls the NOTE-SERVICE for notes data. it runs on port 8081.
+* It uses MySQL database and handles user, signup, login, jwt authentication.
+* After validating the token it calls the NOTE-SERVICE for notes data.
+* It runs on port 8081.
 
-* NOTE-SERVICE
+### NOTE-SERVICE
 
-It uses PostgreSQL database and handles CRUD operations for notes. It runs on port 8082.
+* It uses PostgreSQL database and handles CRUD operations for notes.
+* It runs on port 8082.
 
-* SERVICE-REGISTRY
+### SERVICE-REGISTRY
 
-Service registry used is Netflix Eureka server. Its primary purpose is to facilitate service discovery and registration, allowing microservices to locate and communicate with each other in a dynamic and scalable manner. It runs on port 8761.
+* Service registry used is Netflix Eureka server.
+* Its primary purpose is to facilitate service discovery and registration, allowing microservices to locate and communicate with each other in a dynamic and scalable manner.
+* It runs on port 8761.
 
-* API-GATEWAY
+### API-GATEWAY
 
-API Gateway is a server or service that acts as an API front-end, receiving API requests and passing requests to the back-end service. Spring Cloud Gateway is used here. Spring Cloud Gateway is a lightweight and highly customizable API Gateway built on top of Spring Boot. It run son port 8080.
+* API Gateway is a server or service that acts as an API front-end, receiving API requests and passing requests to the back-end service.
+* Spring Cloud Gateway is used here. It is a lightweight and highly customizable API Gateway built on top of Spring Boot.
+* It run son port 8080.
 
 ## How to use?
 
