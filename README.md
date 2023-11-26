@@ -10,17 +10,22 @@ REST API for users to save notes. It supports CRUD operations for notes. User ca
 The Spring Framework is an application framework and inversion of control container for the Java platform.
 
 #### Spring Boot
-Spring Boot Tutorial provides basic and advanced concepts of Spring Framework. Our Spring Boot Tutorial is designed for beginners and professionals both. It also comes with Tomcat embedded.
+* Spring Boot Tutorial provides basic and advanced concepts of Spring Framework.
+* It also comes with Tomcat embedded.
 
 ### Database
 
 #### MySQL
 
-MySQL is an open-source relational database management system. It is used for UserService for storing user credentials. Notestaker database will be created automatically by this service if it does not exist.
+* MySQL is an open-source relational database management system.
+* It is used for UserService for storing user credentials.
+* Notestaker database in MySQL will be created automatically by this service if it does not exist.
 
 #### PostgreSQL
 
-PostgreSQL is a powerful, open source object-relational database. It is used for NoteService service here to store notes data. You need to create a notestaker database by yourself before running the service otherwise running the NoteService will throw an error.
+* PostgreSQL is a powerful, open source object-relational database.
+* It is used for NoteService service here to store notes data.
+* You need to create a notestaker database in PostgreSQL by yourself before running the service otherwise running the NoteService will throw an error.
 
 ## Tools
 
